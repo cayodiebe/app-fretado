@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "900050010372",
+    "firebase_url": "https://fretadoapp-62ff2.firebaseio.com",
+    "project_id": "fretadoapp-62ff2",
+    "storage_bucket": "fretadoapp-62ff2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:900050010372:android:46f11201ae8d56f3d6d051",
+        "android_client_info": {
+          "package_name": "com.example.fretadoauxililador"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "900050010372-i3fadkt1q1aur7h2ob2ngm3upvugstb3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.fretadoauxililador",
+            "certificate_hash": "dbd4ad10622663c603ba2375cf09196d7cfb2802"
+          }
+        },
+        {
+          "client_id": "900050010372-c5qlc8t49a9ou4mm3j4b2dhhnkkngiev.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-RQS0J029g7t03EYysnj7NKg9XG6mF9Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "900050010372-c5qlc8t49a9ou4mm3j4b2dhhnkkngiev.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
