@@ -9,6 +9,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -25,6 +27,10 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -43,12 +49,49 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //ValidarPermissões
         Permissoes.validarPermissoes(permissoes, this, 1);
 
+        setContentView(R.layout.activity_main);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+    }
+
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
         //Recuperar Localização Usuário
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
+
+                Double latitude = location.getLatitude();
+                Double longitude = location.getLongitude();
+
+                mMap.clear();
+                LatLng your = new LatLng( latitude,longitude);
+                mMap.addMarker(new MarkerOptions().position(your).title("Sua posição"));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(your,15));
+
+
+                Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+
+                try {
+                    // List<Address> listaEndereco = geocoder.getFromLocation(latitude,longitude,1);
+                    String address = "Rua Comendador Oeterrer";
+                    List<Address> listaEndereco = geocoder.getFromLocationName(address,1);
+                    if(listaEndereco != null && listaEndereco.size() > 0 ){
+                        Address endereco = listaEndereco.get(0);
+
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
                 Log.d("Localização","onLocationChanged"+location);
+
+
             }
 
             @Override
@@ -75,22 +118,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return;
         }
 
-        setContentView(R.layout.activity_maps);
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-    }
-
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
         // Add a marker in Sydney and move the camera
         LatLng from = new LatLng(-23.4960716, -47.4723136);
-
         CircleOptions circleOptions = new CircleOptions();
         circleOptions.center(from);
         circleOptions.radius(2000);
