@@ -21,7 +21,6 @@ public class ConfiguracaoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuracao);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
         setSupportActionBar(toolbar);
     }
 
