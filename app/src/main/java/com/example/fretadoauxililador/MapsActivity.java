@@ -7,6 +7,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -14,6 +15,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -23,6 +25,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -46,6 +50,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), ConfiguracaoActivity.class));
+            }
+        });
+
     }
 
 
@@ -53,20 +66,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
-        LatLng from = new LatLng(-23.4960716, -47.4723136);
-        CircleOptions circleOptions = new CircleOptions();
-        circleOptions.center(from);
-        circleOptions.radius(2000);
-        circleOptions.fillColor(Color.argb(128, 255, 153, 0));
-        circleOptions.strokeWidth(10);
-        circleOptions.strokeColor(Color.GREEN);
-        mMap.addCircle(circleOptions);
-
-        mMap.addMarker(new MarkerOptions()
-                .position(from)
-                .title("De")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_house)));
 
         //Recuperar Localização Usuário
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
@@ -78,6 +77,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Double longitude = location.getLongitude();
 
                 mMap.clear();
+
+                LatLng from = new LatLng(-23.4960716, -47.4723136);
+                CircleOptions circleOptionsHouse = new CircleOptions();
+                circleOptionsHouse.center(from);
+                circleOptionsHouse.radius(2000);
+                circleOptionsHouse.fillColor(Color.argb(128, 255, 153, 0));
+                circleOptionsHouse.strokeWidth(10);
+                circleOptionsHouse.strokeColor(Color.YELLOW);
+                mMap.addCircle(circleOptionsHouse);
+
+                mMap.addMarker(new MarkerOptions()
+                        .position(from)
+                        .title("De")
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_house)));
+
+
                 LatLng your = new LatLng( latitude,longitude);
                 CircleOptions circleOptions = new CircleOptions();
                 circleOptions.center(your);
