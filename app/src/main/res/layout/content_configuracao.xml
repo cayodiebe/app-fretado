@@ -21,7 +21,7 @@
         app:layout_constraintTop_toBottomOf="@+id/txtCadastradoCasa" />
 
     <EditText
-        android:id="@+id/editSeuEndereco"
+        android:id="@+id/editSeuTrabalho"
         android:layout_width="340dp"
         android:layout_height="40dp"
         android:layout_marginTop="16dp"
@@ -62,26 +62,27 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.124"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editSeuEndereco" />
-
-    <EditText
-        android:id="@+id/editDistancia"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="50dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintStart_toEndOf="@+id/txtDistancia"
-        app:layout_constraintTop_toBottomOf="@+id/editSeuEndereco" />
+        app:layout_constraintTop_toBottomOf="@+id/editSeuTrabalho" />
 
     <Button
         android:id="@+id/btnSalvar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="50dp"
         android:text="Salvar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editDistancia" />
+
+    <EditText
+        android:id="@+id/editDistancia"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="50dp"
+        android:ems="10"
+        android:inputType="phone"
+        android:text="2"
+        app:layout_constraintStart_toEndOf="@+id/txtDistancia"
+        app:layout_constraintTop_toBottomOf="@+id/editSeuTrabalho" />
 </androidx.constraintlayout.widget.ConstraintLayout>
