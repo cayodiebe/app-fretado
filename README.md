@@ -1,6 +1,11 @@
 # Aplicativo Fretado
 
+# Versão 1.1
 
+> Alteração da estrutura do Banco de Dados de ~Firebase~ para **SQLite** local.
+
+
+# Versão 1.0
 
 Problema: Despertador estático é um problema para usuários de fretado, jamais o horário de chegada é parecido com o outro, e, utilizar despertador estático pode ser frustrante para os usuários.
 
