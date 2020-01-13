@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,6 +29,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.maps.android.SphericalUtil;
+
+import java.util.Calendar;
+
+import Models.Cadastro;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -34,19 +41,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private String[] permissoes = new String[]{Manifest.permission.ACCESS_FINE_LOCATION};
     private LocationManager locationManager;
     private LocationListener locationListener;
-
-
+    private Cadastro cadastro;
+    private Database meu_banco;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        cadastro = new Cadastro();
 
         //ValidarPermissões
         Permissoes.validarPermissoes(permissoes, this, 1);
 
 
         //Setar Variáveis
+        meu_banco = new Database(this);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -69,16 +77,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         //Recuperar Localização Usuário
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
+
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-
-                Double latitude = location.getLatitude();
-                Double longitude = location.getLongitude();
+                double latitude = location.getLatitude();
+                double longitude = location.getLongitude();
+                cadastro = meu_banco.recuperaRegistros();
 
                 mMap.clear();
 
-                LatLng from = new LatLng(-23.4960716, -47.4723136);
+                LatLng from = new LatLng(cadastro.getYourhome_lat(), cadastro.getYourhome_long());
                 CircleOptions circleOptionsHouse = new CircleOptions();
                 circleOptionsHouse.center(from);
                 circleOptionsHouse.radius(2000);
@@ -89,8 +99,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 mMap.addMarker(new MarkerOptions()
                         .position(from)
-                        .title("De")
+                        .title("Casa")
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_house)));
+
+
+                LatLng to = new LatLng(cadastro.getYourjob_lat(), cadastro.getYourjob_long());
+                CircleOptions circleOptionsJob = new CircleOptions();
+                circleOptionsJob.center(to);
+                circleOptionsJob.radius(2000);
+                circleOptionsJob.fillColor(Color.argb(128, 255, 153, 0));
+                circleOptionsJob.strokeWidth(10);
+                circleOptionsJob.strokeColor(Color.RED);
+                mMap.addCircle(circleOptionsJob);
+
+                mMap.addMarker(new MarkerOptions()
+                        .position(to)
+                        .title("Work")
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_house)));
+
 
 
                 LatLng your = new LatLng( latitude,longitude);
@@ -104,9 +130,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.addMarker(new MarkerOptions().position(your).title("Sua posição")
                         .icon(
                                 BitmapDescriptorFactory.fromResource(R.drawable.icon_you)));
-                //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(your,14));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(your,7));
+                double distance = SphericalUtil.computeDistanceBetween(your, from);
+                    Intent it = new Intent("EXECUTAR_ALARME");
+                    PendingIntent p = PendingIntent.getBroadcast(getApplicationContext(), 0, it, 0);
+
+                    Calendar c = Calendar.getInstance();
+                    c.setTimeInMillis(System.currentTimeMillis());
+                    c.add(Calendar.SECOND, 1);
+                    AlarmManager alarme = (AlarmManager) getSystemService(ALARM_SERVICE);
+                    long time = c.getTimeInMillis();
+                    alarme.set(AlarmManager.RTC_WAKEUP, time, p);
+                    Log.i("Alarme", "Alarme agendado!");
 
                 Log.d("Localização","onLocationChanged"+location);
+                Log.d("Distância", "Distancia: "+distance);
 
 
             }
