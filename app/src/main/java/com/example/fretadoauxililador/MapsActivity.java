@@ -141,7 +141,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     AlarmManager alarme = (AlarmManager) getSystemService(ALARM_SERVICE);
                     long time = c.getTimeInMillis();
                     alarme.set(AlarmManager.RTC_WAKEUP, time, p);
-                    Log.i("Alarme", "Alarme agendado!");
+                    Log.i("Alarme", "Alarme agendado!!");
 
                 Log.d("Localização","onLocationChanged"+location);
                 Log.d("Distância", "Distancia: "+distance);
