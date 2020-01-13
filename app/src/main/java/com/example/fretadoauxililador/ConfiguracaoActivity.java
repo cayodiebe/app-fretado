@@ -76,7 +76,11 @@ public class ConfiguracaoActivity extends AppCompatActivity {
                     }
                 }catch(IOException e) {
                 }
+                cadastro.setDistancia(Double.parseDouble(editDistancia.getText().toString()));
                 meu_banco.insereRegistros(cadastro);
+
+                Toast.makeText(getApplicationContext(),"Registro salvo com sucesso!",Toast.LENGTH_LONG).show();
+                finish();
             }
         });
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -93,7 +97,6 @@ public class ConfiguracaoActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            // action with ID action_refresh was selecsted
             case R.id.leave_menu:
                 finish();
                 break;

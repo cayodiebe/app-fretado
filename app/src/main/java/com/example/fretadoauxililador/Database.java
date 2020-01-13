@@ -36,7 +36,7 @@ public class Database extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put("yourhome_lat",cadastro.getYourhome_lat());
-        values.put("yourhome_long",cadastro.getYourhome_lat());
+        values.put("yourhome_long",cadastro.getYourhome_long());
         values.put("yourjob_lat",cadastro.getYourjob_lat());
         values.put("yourjob_long",cadastro.getYourjob_long());
         values.put("distancia",cadastro.getDistancia());
@@ -45,7 +45,7 @@ public class Database extends SQLiteOpenHelper {
         database.close();
     }
 
-    public void recuperaRegistros(){
+    public Cadastro recuperaRegistros(){
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor cursor = database.query("APP_FRETADO",new String[] {
                 "_id",
@@ -58,27 +58,32 @@ public class Database extends SQLiteOpenHelper {
 
         if(cursor.moveToFirst()) {
             do {
+                Cadastro cadastro = new Cadastro();
+
                 String id = cursor.getString(cursor.getColumnIndex("_id"));
                 String yourhome_lat = cursor.getString(cursor.getColumnIndex("yourhome_lat"));
                 String yourhome_long = cursor.getString(cursor.getColumnIndex("yourhome_long"));
                 String yourjob_lat = cursor.getString(cursor.getColumnIndex("yourjob_lat"));
                 String yourjob_long = cursor.getString(cursor.getColumnIndex("yourjob_long"));
                 String distancia = cursor.getString(cursor.getColumnIndex("distancia"));
-                Log.i("Registro: ", id);
-                Log.i("Registro: ", yourhome_lat);
-                Log.i("Registro: ", yourhome_long);
-                Log.i("Registro: ", yourjob_lat);
-                Log.i("Registro: ", yourjob_long);
-                Log.i("Registro: ", distancia);
+
+                cadastro.setYourhome_lat(Double.parseDouble(yourhome_lat));
+                cadastro.setYourhome_long(Double.parseDouble(yourhome_long));
+                cadastro.setYourjob_long(Double.parseDouble(yourjob_long));
+                cadastro.setYourjob_lat(Double.parseDouble(yourjob_lat));
+                cadastro.setDistancia(Double.parseDouble(distancia));
+
+                return cadastro;
             } while (cursor.moveToNext());
         }
         cursor.close();
         database.close();
+        return null;
     }
 
     public void excluirRegistros(String id) {
         SQLiteDatabase database = this.getWritableDatabase();
         database.delete("APP_FRETADO", "_id", new String[]{id});
-        database.close();
+        database.close ();
     }
 }
