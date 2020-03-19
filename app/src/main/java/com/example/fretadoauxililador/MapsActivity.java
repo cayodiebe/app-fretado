@@ -125,7 +125,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         .position(from)
                         .title("Casa")
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_house)));
-
 /*
                 LatLng to = new LatLng(cadastro.getYourjob_lat(), cadastro.getYourjob_long());
                 CircleOptions circleOptionsJob = new CircleOptions();
