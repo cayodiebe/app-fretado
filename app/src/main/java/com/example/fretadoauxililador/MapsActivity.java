@@ -15,6 +15,7 @@ import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -42,6 +43,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LocationListener locationListener;
     private Cadastro cadastro;
     private Database meu_banco;
+    private MediaPlayer player;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +72,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
+    public void play() {
+        if (player == null) {
+            player = MediaPlayer.create(this, R.raw.sound);
+            player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    play();
+                }
+            });
+        }
+
+        player.start();
+    }
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -84,17 +102,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 double latitude = location.getLatitude();
                 double longitude = location.getLongitude();
                 //cadastro = meu_banco.recuperaRegistros();
-                cadastro.setDistancia(2);
-                cadastro.setYourhome_lat(-23.4939464);
-                cadastro.setYourhome_long(-47.458847);
-                cadastro.setYourjob_lat(-23.4939464);
-                cadastro.setYourjob_long(-47.458847);
+                cadastro.setDistancia(0.02);
+                cadastro.setYourhome_lat(-23.4910951);
+                cadastro.setYourhome_long(-47.4628921);
                 mMap.clear();
+
+                double lat = cadastro.getYourhome_lat()-cadastro.getDistancia();
+                double log = cadastro.getYourhome_long()-cadastro.getDistancia();
+                double latb = cadastro.getYourhome_lat()+cadastro.getDistancia();
+                double logb = cadastro.getYourhome_long()+cadastro.getDistancia();
 
                 LatLng from = new LatLng(cadastro.getYourhome_lat(), cadastro.getYourhome_long());
                 CircleOptions circleOptionsHouse = new CircleOptions();
                 circleOptionsHouse.center(from);
-                circleOptionsHouse.radius(2000);
+                circleOptionsHouse.radius(cadastro.getDistancia()*1000);
                 circleOptionsHouse.fillColor(Color.argb(128, 255, 153, 0));
                 circleOptionsHouse.strokeWidth(10);
                 circleOptionsHouse.strokeColor(Color.YELLOW);
@@ -105,7 +126,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         .title("Casa")
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_house)));
 
-
+/*
                 LatLng to = new LatLng(cadastro.getYourjob_lat(), cadastro.getYourjob_long());
                 CircleOptions circleOptionsJob = new CircleOptions();
                 circleOptionsJob.center(to);
@@ -119,7 +140,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         .position(to)
                         .title("Work")
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_house)));
-
+*/
 
 
                 LatLng your = new LatLng( latitude,longitude);
@@ -133,22 +154,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.addMarker(new MarkerOptions().position(your).title("Sua posição")
                         .icon(
                                 BitmapDescriptorFactory.fromResource(R.drawable.icon_you)));
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(your,7));
+                //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(your,12));
                 //double distance = SphericalUtil.computeDistanceBetween(your, from);
-                    Intent it = new Intent("EXECUTAR_ALARME");
-                    PendingIntent p = PendingIntent.getBroadcast(getApplicationContext(), 0, it, 0);
+                Log.d("Test", "Lat"+your.latitude);
+                Log.d("Test", "L"+your.longitude);
+                Log.d("LongBet", "BET"+log+","+logb);
+                Log.d("LagBet", "BET"+lat+","+latb);
 
-                    Calendar c = Calendar.getInstance();
-                    c.setTimeInMillis(System.currentTimeMillis());
-                    c.add(Calendar.SECOND, 1);
-                    AlarmManager alarme = (AlarmManager) getSystemService(ALARM_SERVICE);
-                    long time = c.getTimeInMillis();
-                    alarme.set(AlarmManager.RTC_WAKEUP, time, p);
-                    Log.i("Alarme", "Alarme agendado!!");
-
-                Log.d("Localização","onLocationChanged"+location);
-                Log.d("Distância", "Distancia: "+1);
-
+                if(lat < your.latitude && latb > your.latitude){
+                    if(log < your.longitude && logb > your.longitude) {
+                        Log.d("Entrou", "entrou");
+                        play();
+                    }
+                }
 
             }
 
