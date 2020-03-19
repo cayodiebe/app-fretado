@@ -29,7 +29,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.maps.android.SphericalUtil;
 
 import java.util.Calendar;
 
@@ -84,8 +83,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onLocationChanged(Location location) {
                 double latitude = location.getLatitude();
                 double longitude = location.getLongitude();
-                cadastro = meu_banco.recuperaRegistros();
-
+                //cadastro = meu_banco.recuperaRegistros();
+                cadastro.setDistancia(2);
+                cadastro.setYourhome_lat(-23.4939464);
+                cadastro.setYourhome_long(-47.458847);
+                cadastro.setYourjob_lat(-23.4939464);
+                cadastro.setYourjob_long(-47.458847);
                 mMap.clear();
 
                 LatLng from = new LatLng(cadastro.getYourhome_lat(), cadastro.getYourhome_long());
@@ -131,7 +134,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         .icon(
                                 BitmapDescriptorFactory.fromResource(R.drawable.icon_you)));
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(your,7));
-                double distance = SphericalUtil.computeDistanceBetween(your, from);
+                //double distance = SphericalUtil.computeDistanceBetween(your, from);
                     Intent it = new Intent("EXECUTAR_ALARME");
                     PendingIntent p = PendingIntent.getBroadcast(getApplicationContext(), 0, it, 0);
 
@@ -144,7 +147,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     Log.i("Alarme", "Alarme agendado!!");
 
                 Log.d("Localização","onLocationChanged"+location);
-                Log.d("Distância", "Distancia: "+distance);
+                Log.d("Distância", "Distancia: "+1);
 
 
             }
