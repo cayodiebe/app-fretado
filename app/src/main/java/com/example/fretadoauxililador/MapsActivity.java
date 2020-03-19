@@ -134,7 +134,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 circleOptionsJob.strokeWidth(10);
                 circleOptionsJob.strokeColor(Color.RED);
                 mMap.addCircle(circleOptionsJob);
-
                 mMap.addMarker(new MarkerOptions()
                         .position(to)
                         .title("Work")
