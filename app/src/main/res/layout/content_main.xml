@@ -8,14 +8,14 @@
     tools:context=".MapsActivity"
     tools:showIn="@layout/activity_main">
 
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:map="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MapsActivity" />
+        tools:context=".MapsActivity"
+        tools:layout_editor_absoluteX="90dp"
+        tools:layout_editor_absoluteY="-46dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
