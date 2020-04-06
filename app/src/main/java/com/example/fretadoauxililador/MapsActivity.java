@@ -116,36 +116,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 CircleOptions circleOptionsHouse = new CircleOptions();
                 circleOptionsHouse.center(from);
                 circleOptionsHouse.radius(cadastro.getDistancia()*1000);
-                circleOptionsHouse.fillColor(Color.argb(128, 255, 153, 0));
-                circleOptionsHouse.strokeWidth(10);
-                circleOptionsHouse.strokeColor(Color.YELLOW);
                 mMap.addCircle(circleOptionsHouse);
-
-                mMap.addMarker(new MarkerOptions()
-                        .position(from)
-                        .title("Casa")
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_house)));
-/*
-                LatLng to = new LatLng(cadastro.getYourjob_lat(), cadastro.getYourjob_long());
-                CircleOptions circleOptionsJob = new CircleOptions();
-                circleOptionsJob.center(to);
-                circleOptionsJob.radius(2000);
-                circleOptionsJob.fillColor(Color.argb(128, 255, 153, 0));
-                circleOptionsJob.strokeWidth(10);
-                circleOptionsJob.strokeColor(Color.RED);
-                mMap.addCircle(circleOptionsJob);
-
-                mMap.addMarker(new MarkerOptions()
-                        .position(to)
-                        .title("Work")
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_house)));
-*/
-
+                mMap.addMarker(new MarkerOptions().position(from).title("Casa").icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_house)));
 
                 LatLng your = new LatLng( latitude,longitude);
                 CircleOptions circleOptions = new CircleOptions();
                 circleOptions.center(your);
-                circleOptions.radius(2000);
+                circleOptions.radius(cadastro.getDistancia()*1000);
                 circleOptions.fillColor(Color.argb(128, 65, 85, 90));
                 circleOptions.strokeWidth(1);
                 circleOptions.strokeColor(Color.BLUE);
@@ -153,36 +130,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 mMap.addMarker(new MarkerOptions().position(your).title("Sua posição")
                         .icon(
                                 BitmapDescriptorFactory.fromResource(R.drawable.icon_you)));
-                //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(your,12));
-                //double distance = SphericalUtil.computeDistanceBetween(your, from);
-                Log.d("Test", "Lat"+your.latitude);
-                Log.d("Test", "L"+your.longitude);
-                Log.d("LongBet", "BET"+log+","+logb);
-                Log.d("LagBet", "BET"+lat+","+latb);
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(your,7));
 
                 if(lat < your.latitude && latb > your.latitude){
                     if(log < your.longitude && logb > your.longitude) {
-                        Log.d("Entrou", "entrou");
                         play();
                     }
                 }
-
             }
+
 
             @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
+            public void onStatusChanged(String provider, int status, Bundle extras) {}
 
             @Override
-            public void onProviderEnabled(String provider) {
-
-            }
+            public void onProviderEnabled(String provider) {}
 
             @Override
-            public void onProviderDisabled(String provider) {
-
-            }
+            public void onProviderDisabled(String provider) {}
         };
 
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
